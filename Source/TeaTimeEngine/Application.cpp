@@ -10,7 +10,7 @@ using Json = nlohmann::json;
 #include "Entities/EntityFactories.h"
 #include "Entities/IGameEntity.h"
 #include "Services/FontService.h"
-#include "Services/ParticleEffectService.h"
+#include "Services/ParticlesService.h"
 #include "Services/RandomService.h"
 #include "Services/SceneLoaderService.h"
 #include "Services/SynchronousEventService.h"
@@ -174,9 +174,8 @@ void Application::CreateAndStartServices()
   auto fontService = std::make_shared<FontService>();
   ServiceLocator::RegisterService<IFontService>(fontService);
 
-  auto particleEffectService = std::make_shared<ParticleEffectService>();
-  ServiceLocator::RegisterService<IParticleEffectService>
-    (particleEffectService);
+  auto particlesService = std::make_shared<ParticlesService>();
+  ServiceLocator::RegisterService<IParticlesService>(particlesService);
 
   auto randomService = std::make_shared<RandomService>();
   ServiceLocator::RegisterService<IRandomService>(randomService);

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "IParticleEffectService.h"
+#include "IParticlesService.h"
 
 #include <unordered_map>
 
-class ParticleEffectService : public IParticleEffectService
+class ParticlesService : public IParticlesService
 {
 private:
   std::unordered_map<std::string, std::shared_ptr<IParticleEffectFactory>>
@@ -12,8 +12,8 @@ private:
   std::unordered_map<std::string, IParticleEffectPtr> _loadedEffects;
 
 public:
-  ParticleEffectService();
-  ~ParticleEffectService();
+  ParticlesService();
+  ~ParticlesService() = default;
 
   void RegisterFactory(const std::string& className,
     std::shared_ptr<IParticleEffectFactory> factory) override;

@@ -1,6 +1,6 @@
 target_sources(TeaTimeEngine PRIVATE 
   "FontService.cpp"
-  "ParticleEffectService.cpp"
+  "ParticlesService.cpp"
   "RandomService.cpp"
   "SceneLoaderService.cpp"
   "ServiceLocator.cpp"

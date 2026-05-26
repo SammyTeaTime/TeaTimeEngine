@@ -1,4 +1,4 @@
-#include "Services/ParticleEffectService.h"
+#include "Services/ParticlesService.h"
 
 #include <filesystem>
 #include <fstream>
@@ -11,26 +11,22 @@ using Json = nlohmann::json;
 #include "Entities/IParticleEffectFactory.h"
 #include "Scene.h"
 
-ParticleEffectService::ParticleEffectService()
+ParticlesService::ParticlesService()
 {
 }
 
-ParticleEffectService::~ParticleEffectService()
-{
-}
-
-void ParticleEffectService::RegisterFactory(const std::string& className, 
+void ParticlesService::RegisterFactory(const std::string& className,
   std::shared_ptr<IParticleEffectFactory> factory)
 {
   _particleEffectFactories[className] = factory;
 }
 
-void ParticleEffectService::UnregisterFactory(const std::string& className)
+void ParticlesService::UnregisterFactory(const std::string& className)
 {
   _particleEffectFactories.erase(className);
 }
 
-void ParticleEffectService::LoadParticleEffects()
+void ParticlesService::LoadParticleEffects()
 {
   std::string particleEffectsDirectory = "Assets/ParticleEffects";
   if (!std::filesystem::exists(particleEffectsDirectory))
@@ -49,7 +45,7 @@ void ParticleEffectService::LoadParticleEffects()
   }
 }
 
-IParticleEffectPtr ParticleEffectService::InstantiateEffect(const std::string&
+IParticleEffectPtr ParticlesService::InstantiateEffect(const std::string&
   effectName, Scene& scene, sf::Vector2f position, bool autoPlay)
 {
   for (auto& effect : _loadedEffects)
@@ -76,7 +72,7 @@ IParticleEffectPtr ParticleEffectService::InstantiateEffect(const std::string&
   return nullptr;
 }
 
-void ParticleEffectService::LoadParticleEffect(
+void ParticlesService::LoadParticleEffect(
   const std::string& particleEffectPath)
 {
   if (!std::filesystem::exists(particleEffectPath))

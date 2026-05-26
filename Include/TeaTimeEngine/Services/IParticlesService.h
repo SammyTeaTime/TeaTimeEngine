@@ -10,10 +10,10 @@ class IParticleEffectFactory;
 typedef std::shared_ptr<IParticleEffect> IParticleEffectPtr;
 class Scene;
 
-class IParticleEffectService
+class IParticlesService
 {
 public:
-  virtual ~IParticleEffectService() = default;
+  virtual ~IParticlesService() = default;
 
   virtual void RegisterFactory(const std::string& className,
     std::shared_ptr<IParticleEffectFactory> factory) = 0;

@@ -11,6 +11,7 @@ using Json = nlohmann::json;
 #include "Entities/IGameEntity.h"
 #include "Services/FontService.h"
 #include "Services/ParticleEffectService.h"
+#include "Services/RandomService.h"
 #include "Services/SceneLoaderService.h"
 #include "Services/SynchronousEventService.h"
 
@@ -176,6 +177,9 @@ void Application::CreateAndStartServices()
   auto particleEffectService = std::make_shared<ParticleEffectService>();
   ServiceLocator::RegisterService<IParticleEffectService>
     (particleEffectService);
+
+  auto randomService = std::make_shared<RandomService>();
+  ServiceLocator::RegisterService<IRandomService>(randomService);
 
   auto sceneLoaderService = std::make_shared<SceneLoaderService>();
   ServiceLocator::RegisterService<ISceneLoaderService>(sceneLoaderService);

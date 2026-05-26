@@ -19,9 +19,10 @@ public:
   SceneLoaderService();
   ~SceneLoaderService();
 
-  void RegisterGameEntityFactory(const std::string& className,
+  void RegisterFactory(
+    const std::string& className,
     std::shared_ptr<IGameEntityFactory> factory) override;
-  void UnregisterGameEntityFactory(const std::string& className) override;
+  void UnregisterFactory(const std::string& className) override;
   std::shared_ptr<Scene> LoadScene(const std::string& scenePath) override;
   IGameEntityPtr CreateGameEntity(
     const std::string& className,

@@ -17,13 +17,13 @@ SceneLoaderService::~SceneLoaderService()
 {
 }
 
-void SceneLoaderService::RegisterGameEntityFactory(const std::string& className,
+void SceneLoaderService::RegisterFactory(const std::string& className,
   std::shared_ptr<IGameEntityFactory> factory)
 {
   _gameEntityFactories[className] = factory;
 }
 
-void SceneLoaderService::UnregisterGameEntityFactory(const std::string& className)
+void SceneLoaderService::UnregisterFactory(const std::string& className)
 {
   _gameEntityFactories.erase(className);
 }

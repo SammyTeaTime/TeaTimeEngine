@@ -184,8 +184,8 @@ void Application::CreateAndStartServices()
   ServiceLocator::RegisterService<ISceneLoaderService>(sceneLoaderService);
 
   fontService->LoadFonts();
-  sceneLoaderService->RegisterGameEntityFactory("TextEntity",
+  sceneLoaderService->RegisterFactory("TextEntity",
     std::make_shared<TextEntityFactory>());
-  sceneLoaderService->RegisterGameEntityFactory("FPSDisplayEntity",
+  sceneLoaderService->RegisterFactory("FPSDisplayEntity",
     std::make_shared<FPSDisplayEntityFactory>());
 }

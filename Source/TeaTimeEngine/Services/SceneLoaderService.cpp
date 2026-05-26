@@ -44,7 +44,7 @@ std::shared_ptr<Scene> SceneLoaderService::LoadScene(const std::string& scenePat
     std::string className = (*it)["class"];
 
     IGameEntityPtr gameEntity = _gameEntityFactories[className]->
-      Create((*it)["data"]);
+      Create((*it)["data"], scene);
 
     scene->AddGameEntity(gameEntity);
   }
@@ -52,13 +52,15 @@ std::shared_ptr<Scene> SceneLoaderService::LoadScene(const std::string& scenePat
   return scene;
 }
 
-IGameEntityPtr SceneLoaderService::CreateGameEntity(const std::string& className,
-  std::unordered_map<std::string, std::string> params)
+IGameEntityPtr SceneLoaderService::CreateGameEntity(
+  const std::string& className,
+  std::unordered_map<std::string, std::string> params,
+  ScenePtr scene)
 {
   if (_gameEntityFactories.find(className) == _gameEntityFactories.end())
   {
     return nullptr;
   }
 
-  return _gameEntityFactories[className]->Create(params);
+  return _gameEntityFactories[className]->Create(params, scene);
 }

@@ -7,8 +7,8 @@
 using Json = nlohmann::json;
 #include <plog/Log.h>
 
-#include "Entities/IGameEntityFactory.h"
 #include "Entities/IParticleEffect.h"
+#include "Entities/IParticleEffectFactory.h"
 #include "Scene.h"
 
 ParticleEffectService::ParticleEffectService()
@@ -19,13 +19,13 @@ ParticleEffectService::~ParticleEffectService()
 {
 }
 
-void ParticleEffectService::RegisterGameEntityFactory(
-  const std::string& className, std::shared_ptr<IGameEntityFactory> factory)
+void ParticleEffectService::RegisterFactory(const std::string& className, 
+  std::shared_ptr<IParticleEffectFactory> factory)
 {
   _particleEffectFactories[className] = factory;
 }
 
-void ParticleEffectService::UnregisterGameEntityFactory(const std::string& className)
+void ParticleEffectService::UnregisterFactory(const std::string& className)
 {
   _particleEffectFactories.erase(className);
 }

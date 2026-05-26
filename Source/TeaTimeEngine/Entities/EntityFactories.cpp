@@ -9,7 +9,7 @@
 #include "Services/IFontService.h"
 #include "Services/ServiceLocator.h"
 
-IGameEntityPtr TextEntityFactory::Create(const Json& data)
+IGameEntityPtr TextEntityFactory::Create(const Json& data, ScenePtr scene)
 {
   if (!data.contains("font") || !data["font"].is_string())
   {
@@ -41,7 +41,8 @@ IGameEntityPtr TextEntityFactory::Create(const Json& data)
   return textEntity;
 }
 
-IGameEntityPtr FPSDisplayEntityFactory::Create(const Json& data)
+IGameEntityPtr FPSDisplayEntityFactory::Create(
+  const Json& data, ScenePtr scene)
 {
   if (!data.contains("font") || !data["font"].is_string())
   {

@@ -23,6 +23,8 @@ public:
     std::shared_ptr<IGameEntityFactory> factory) override;
   void UnregisterGameEntityFactory(const std::string& className) override;
   std::shared_ptr<Scene> LoadScene(const std::string& scenePath) override;
-  IGameEntityPtr CreateGameEntity(const std::string& className,
-    std::unordered_map<std::string, std::string> params) override;
+  IGameEntityPtr CreateGameEntity(
+    const std::string& className,
+    std::unordered_map<std::string, std::string> params,
+    ScenePtr scene) override;
 };

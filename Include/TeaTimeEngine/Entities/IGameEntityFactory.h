@@ -3,7 +3,9 @@
 #include <memory>
 
 class IGameEntity;
-using IGameEntityPtr = std::shared_ptr<IGameEntity>;
+typedef std::shared_ptr<IGameEntity> IGameEntityPtr;
+class Scene;
+typedef std::shared_ptr<Scene> ScenePtr;
 
 #include <nlohmann/json.hpp>
 using Json = nlohmann::json;
@@ -13,7 +15,7 @@ class IGameEntityFactory
 public:
   virtual ~IGameEntityFactory() = default;
 
-  virtual IGameEntityPtr Create(const Json& data) = 0;
+  virtual IGameEntityPtr Create(const Json& data, ScenePtr scene) = 0;
 };
 
 #define IGAMEENTITYFACTORY_SET_COMMON_PARAMS(entity, data) \

@@ -9,10 +9,10 @@
 class Scene
 {
 private:
-  std::vector<IGameEntityPtr> _gameEntities;
-  std::vector<IGameEntityPtr> _disabledGameEntities;
-  std::vector<IGameEntityPtr> _unstartedGameEntities;
-  std::vector<IGameEntityPtr> _destroyedGameEntities;
+  EntityList _gameEntities;
+  EntityList _disabledGameEntities;
+  EntityList _unstartedGameEntities;
+  EntityList _destroyedGameEntities;
 
 public:
   Scene() = default;
@@ -22,7 +22,7 @@ public:
   void RemoveGameEntity(IGameEntityPtr entity);
 
   IGameEntityPtr FindGameEntityOfType(const std::type_info& typeInfo);
-  std::vector<IGameEntityPtr> FindGameEntitiesOfType(
+  EntityList FindGameEntitiesOfType(
     const std::type_info& typeInfo);
 
   void Update(const float dt);

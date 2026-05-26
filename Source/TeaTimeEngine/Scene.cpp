@@ -24,9 +24,9 @@ IGameEntityPtr Scene::FindGameEntityOfType(const std::type_info& typeInfo)
   return nullptr;
 }
 
-std::vector<IGameEntityPtr> Scene::FindGameEntitiesOfType(const std::type_info& typeInfo)
+EntityList Scene::FindGameEntitiesOfType(const std::type_info& typeInfo)
 {
-  std::vector<IGameEntityPtr> entitiesOfType;
+  EntityList entitiesOfType;
 
   for (auto& gameEntity : _gameEntities)
   {

@@ -22,6 +22,8 @@ public:
 };
 
 typedef std::shared_ptr<IGameEntity> IGameEntityPtr;
+typedef std::vector<IGameEntityPtr> EntityList;
+typedef std::shared_ptr<EntityList> EntityListPtr;
 
 #define IGAMEENTITY_DECLARATION() \
 private: \

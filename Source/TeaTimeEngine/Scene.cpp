@@ -78,8 +78,8 @@ void Scene::Update(const float dt)
       gameEntity);
     if (iter != _gameEntities.end())
     {
-      gameEntity->Destroy();
       _gameEntities.erase(iter, _gameEntities.end());
+      gameEntity->Destroy();
     }
     else
     {
@@ -87,8 +87,8 @@ void Scene::Update(const float dt)
         gameEntity);
       if (iter != _disabledGameEntities.end())
       {
-        gameEntity->Destroy();
         _disabledGameEntities.erase(iter, _disabledGameEntities.end());
+        gameEntity->Destroy();
       }
     }
   }

@@ -29,3 +29,5 @@ public:
   void Render(sf::RenderWindow& window);
   void Destroy();
 };
+
+typedef std::shared_ptr<Scene> ScenePtr;

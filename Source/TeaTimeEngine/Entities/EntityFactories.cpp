@@ -20,7 +20,7 @@ IGameEntityPtr TextEntityFactory::Create(const Json& data)
 
   std::string fontName = data["font"];
 
-  auto fontService = ServiceLocator::GetInstance()->GetService<IFontService>();
+  auto fontService = ServiceLocator::GetService<IFontService>();
   if (!fontService)
   {
     PLOG_ERROR << "TextEntityFactory: FontService not available";
@@ -53,7 +53,7 @@ IGameEntityPtr FPSDisplayEntityFactory::Create(const Json& data)
 
   std::string fontName = data["font"];
 
-  auto fontService = ServiceLocator::GetInstance()->GetService<IFontService>();
+  auto fontService = ServiceLocator::GetService<IFontService>();
   if (!fontService)
   {
     PLOG_ERROR << "FPSDisplayEntityFactory: FontService not available";

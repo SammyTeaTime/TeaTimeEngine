@@ -17,25 +17,20 @@ public:
   ServiceLocator();
   ~ServiceLocator() { _instance = nullptr; }
 
-  static ServiceLocator* GetInstance()
+  template<typename T>
+  static void RegisterService(std::shared_ptr<T> service)
   {
-    return _instance;
+    const size_t typeHash = typeid(T).hash_code();
+    _instance->_services[typeHash] = service;
   }
 
   template<typename T>
-  void RegisterService(std::shared_ptr<T> service)
+  static std::shared_ptr<T> GetService()
   {
     const size_t typeHash = typeid(T).hash_code();
-    _services[typeHash] = service;
-  }
-
-  template<typename T>
-  std::shared_ptr<T> GetService()
-  {
-    const size_t typeHash = typeid(T).hash_code();
-    if (_services.find(typeHash) != _services.end())
+    if (_instance->_services.find(typeHash) != _instance->_services.end())
     {
-      return std::static_pointer_cast<T>(_services[typeHash]);
+      return std::static_pointer_cast<T>(_instance->_services[typeHash]);
     }
 
     throw std::runtime_error("Service not found: " +

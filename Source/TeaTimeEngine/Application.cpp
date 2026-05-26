@@ -87,7 +87,7 @@ void Application::LoadStartupScene()
     return;
   }
 
-  auto sceneLoaderService = _serviceLocator->GetService<ISceneLoaderService>();
+  auto sceneLoaderService = ServiceLocator::GetService<ISceneLoaderService>();
   std::shared_ptr<Scene> scene = sceneLoaderService->
     LoadScene(_startupScenePath);
   _scenes.push_back(scene);
@@ -168,17 +168,17 @@ void Application::CreateAndStartServices()
   _serviceLocator = std::make_shared<ServiceLocator>();
 
   auto eventService = std::make_shared<SynchronousEventService>();
-  _serviceLocator->RegisterService<IEventService>(eventService);
+  ServiceLocator::RegisterService<IEventService>(eventService);
 
   auto fontService = std::make_shared<FontService>();
-  _serviceLocator->RegisterService<IFontService>(fontService);
+  ServiceLocator::RegisterService<IFontService>(fontService);
 
   auto particleEffectService = std::make_shared<ParticleEffectService>();
-  _serviceLocator->RegisterService<IParticleEffectService>
+  ServiceLocator::RegisterService<IParticleEffectService>
     (particleEffectService);
 
   auto sceneLoaderService = std::make_shared<SceneLoaderService>();
-  _serviceLocator->RegisterService<ISceneLoaderService>(sceneLoaderService);
+  ServiceLocator::RegisterService<ISceneLoaderService>(sceneLoaderService);
 
   fontService->LoadFonts();
   sceneLoaderService->RegisterGameEntityFactory("TextEntity",

@@ -3,6 +3,7 @@
 #pragma once
 
 #include <memory>
+#include <string>
 #include <vector>
 
 #include <SFML/Graphics.hpp>
@@ -42,6 +43,7 @@ public:
   void Render();
   void Destroy();
 
+  void LoadScene(const std::string& scenePath);
   void LoadStartupScene();
 
   sf::RenderWindow& GetRenderWindow() { return _window; }

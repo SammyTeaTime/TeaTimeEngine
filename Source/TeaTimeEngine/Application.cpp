@@ -81,17 +81,21 @@ void Application::Destroy()
   _scenes.clear();
 }
 
-void Application::LoadStartupScene()
+void Application::LoadScene(const std::string& scenePath)
 {
-  if (_startupScenePath.empty() || !std::filesystem::exists(_startupScenePath))
+  if (scenePath.empty() || !std::filesystem::exists(scenePath))
   {
     return;
   }
 
   auto sceneLoaderService = ServiceLocator::GetService<ISceneLoaderService>();
-  std::shared_ptr<Scene> scene = sceneLoaderService->
-    LoadScene(_startupScenePath);
+  std::shared_ptr<Scene> scene = sceneLoaderService->LoadScene(scenePath);
   _scenes.push_back(scene);
+}
+
+void Application::LoadStartupScene()
+{
+  LoadScene(_startupScenePath);
 }
 
 #pragma region System Event Handling

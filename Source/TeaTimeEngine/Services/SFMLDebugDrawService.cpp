@@ -10,6 +10,7 @@ void SFMLDebugDrawService::DrawRectangle(
   auto rectangle = sf::RectangleShape(size);
   rectangle.setOrigin(size * 0.5f);
   rectangle.setPosition(position);
+  rectangle.setFillColor(sf::Color::Transparent);
   rectangle.setOutlineColor(colour);
   rectangle.setOutlineThickness(2.0f);
 
@@ -24,6 +25,7 @@ void SFMLDebugDrawService::DrawCircle(
   auto circle = sf::CircleShape(radius);
   circle.setOrigin({ radius * 0.5f , radius * 0.5f });
   circle.setPosition(position);
+  circle.setFillColor(sf::Color::Transparent);
   circle.setOutlineColor(colour);
   circle.setOutlineThickness(2.0f);
 

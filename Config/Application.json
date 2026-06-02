@@ -5,5 +5,6 @@
     "width": 800,
     "height": 600,
     "vsync": true
-  }
+  },
+  "fpsLimit": 120
 }

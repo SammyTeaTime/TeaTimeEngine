@@ -53,6 +53,7 @@ void Application::Setup()
 void Application::Update()
 {
   float dt = _clock.restart().asSeconds();
+  dt = fminf(dt, _frameDeltaTimeLimit);
 
   for (auto& scene : _scenes)
   {
@@ -165,6 +166,13 @@ void Application::ApplyApplicationConfig()
       bool vsync = windowConfig["vsync"];
       _window.setVerticalSyncEnabled(vsync);
     }
+  }
+
+  if (configJson.contains("fpsLimit") && 
+    configJson["fpsLimit"].is_number())
+  {
+    float fpsLimit = configJson["fpsLimit"];
+    _frameDeltaTimeLimit = 1.0f / fpsLimit;
   }
 }
 

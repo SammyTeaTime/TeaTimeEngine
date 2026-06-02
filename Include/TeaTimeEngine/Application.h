@@ -25,6 +25,7 @@ private:
   std::vector<std::shared_ptr<Scene>> _scenes;
 
   std::string _startupScenePath = "";
+  float _frameDeltaTimeLimit = 1.0f / 120.0f;
 
 public:
   Application();

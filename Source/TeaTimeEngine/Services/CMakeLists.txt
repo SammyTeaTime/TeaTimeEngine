@@ -4,5 +4,6 @@ target_sources(TeaTimeEngine PRIVATE
   "RandomService.cpp"
   "SceneLoaderService.cpp"
   "ServiceLocator.cpp"
+  "SFMLDebugDrawService.cpp"
   "SynchronousEventService.cpp"
 )

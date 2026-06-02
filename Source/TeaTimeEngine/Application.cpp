@@ -13,6 +13,7 @@ using Json = nlohmann::json;
 #include "Services/ParticlesService.h"
 #include "Services/RandomService.h"
 #include "Services/SceneLoaderService.h"
+#include "Services/SFMLDebugDrawService.h"
 #include "Services/SynchronousEventService.h"
 
 Application* Application::_instance = nullptr;
@@ -182,6 +183,9 @@ void Application::CreateAndStartServices()
 
   auto eventService = std::make_shared<SynchronousEventService>();
   ServiceLocator::RegisterService<IEventService>(eventService);
+
+  auto debugDrawService = std::make_shared<SFMLDebugDrawService>();
+  ServiceLocator::RegisterService<IDebugDrawService>(debugDrawService);
 
   auto fontService = std::make_shared<FontService>();
   ServiceLocator::RegisterService<IFontService>(fontService);

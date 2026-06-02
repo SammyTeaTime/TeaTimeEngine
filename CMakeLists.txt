@@ -1,4 +1,4 @@
-﻿cmake_minimum_required (VERSION 3.27)
+﻿cmake_minimum_required (VERSION 3.30)
 set(CMAKE_POLICY_VERSION_MINIMUM 3.5)
 
 project (TeaTimeEngine VERSION 1.0.0)
@@ -42,7 +42,7 @@ target_include_directories(TeaTimeEngine PUBLIC "Include")
 add_subdirectory("Source/TeaTimeEngine/Entities")
 add_subdirectory("Source/TeaTimeEngine/Services")
 
-target_compile_features(TeaTimeEngine PUBLIC cxx_std_20)
+target_compile_features(TeaTimeEngine PUBLIC cxx_std_23)
 target_link_libraries(TeaTimeEngine PUBLIC
   nlohmann_json::nlohmann_json
   plog::plog

@@ -8,9 +8,8 @@
 
 #include <SFML/Graphics.hpp>
 
-#include "Entities/IGameEntity.h"
-#include "Services/ServiceLocator.h"
-#include "Scene.h"
+class IScenesService;
+class ServiceLocator;
 
 class Application
 {
@@ -18,7 +17,7 @@ private:
   sf::Clock _clock;
   std::shared_ptr<sf::RenderWindow> _renderWindow = nullptr;
   std::shared_ptr<ServiceLocator> _serviceLocator = nullptr;
-  std::vector<std::shared_ptr<Scene>> _scenes;
+  std::weak_ptr<IScenesService> _scenesService;
 
   std::string _startupScenePath = "";
   float _frameDeltaTimeLimit = 1.0f / 120.0f;
@@ -35,7 +34,6 @@ public:
   void Render();
   void Destroy();
 
-  void LoadScene(const std::string& scenePath);
   void LoadStartupScene();
 
   std::weak_ptr<ServiceLocator> GetServiceLocator() const

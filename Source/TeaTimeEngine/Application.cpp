@@ -2,7 +2,6 @@
 
 #include <filesystem>
 #include <fstream>
-#include <stdexcept>
 
 #include <nlohmann/json.hpp>
 using Json = nlohmann::json;
@@ -13,9 +12,12 @@ using Json = nlohmann::json;
 #include "Services/ParticlesService.h"
 #include "Services/RandomService.h"
 #include "Services/RenderWindowService.h"
+#include "Services/ServiceLocator.h"
 #include "Services/SceneLoaderService.h"
+#include "Services/ScenesService.h"
 #include "Services/SFMLDebugDrawService.h"
 #include "Services/SynchronousEventService.h"
+#include "Scene.h"
 
 Application::Application()
 {
@@ -49,9 +51,11 @@ void Application::Update()
   float dt = _clock.restart().asSeconds();
   dt = fminf(dt, _frameDeltaTimeLimit);
 
-  for (auto& scene : _scenes)
+  auto scenes = _scenesService.lock()->GetScenes();
+
+  for (auto& scene : scenes)
   {
-    scene->Update(dt);
+    scene.lock()->Update(dt);
   }
 }
 
@@ -59,9 +63,11 @@ void Application::Render()
 {
   _renderWindow->clear();
 
-  for (auto& scene : _scenes)
+  auto scenes = _scenesService.lock()->GetScenes();
+
+  for (auto& scene : scenes)
   {
-    scene->Render(*_renderWindow);
+    scene.lock()->Render(*_renderWindow);
   }
 
   _renderWindow->display();
@@ -69,29 +75,17 @@ void Application::Render()
 
 void Application::Destroy()
 {
-  for (auto& scene : _scenes)
-  {
-    scene->Destroy();
-  }
-  _scenes.clear();
-}
+  auto scenes = _scenesService.lock()->GetScenes();
 
-void Application::LoadScene(const std::string& scenePath)
-{
-  if (scenePath.empty() || !std::filesystem::exists(scenePath))
+  for (auto& scene : scenes)
   {
-    return;
+    scene.lock()->Destroy();
   }
-
-  auto sceneLoaderService = _serviceLocator->GetService<ISceneLoaderService>();
-  std::shared_ptr<Scene> scene = 
-    sceneLoaderService.lock()->LoadScene(scenePath);
-  _scenes.push_back(scene);
 }
 
 void Application::LoadStartupScene()
 {
-  LoadScene(_startupScenePath);
+  _scenesService.lock()->LoadScene(_startupScenePath);
 }
 
 #pragma region System Event Handling
@@ -196,6 +190,10 @@ void Application::CreateAndStartServices()
   auto sceneLoaderService =
     std::make_shared<SceneLoaderService>(_serviceLocator);
   _serviceLocator->RegisterService<ISceneLoaderService>(sceneLoaderService);
+
+  auto scenesService = std::make_shared<ScenesService>(sceneLoaderService);
+  _serviceLocator->RegisterService<IScenesService>(scenesService);
+  _scenesService = scenesService;
 
   fontService->LoadFonts();
   sceneLoaderService->RegisterFactory("TextEntity",

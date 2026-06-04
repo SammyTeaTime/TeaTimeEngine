@@ -15,7 +15,7 @@ public:
   ~RenderWindowService() = default;
 
   sf::RenderWindow& GetRenderWindow() override 
-  { 
+  {
     return *(_renderWindow.lock());
   }
 };

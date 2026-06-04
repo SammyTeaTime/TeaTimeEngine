@@ -9,7 +9,10 @@
 #include "Services/IFontService.h"
 #include "Services/ServiceLocator.h"
 
-IGameEntityPtr TextEntityFactory::Create(const Json& data, ScenePtr scene)
+IGameEntityPtr TextEntityFactory::Create(
+  const Json& data,
+  SceneWeakPtr scene,
+  const ServiceLocator& serviceLocator)
 {
   if (!data.contains("font") || !data["font"].is_string())
   {
@@ -20,15 +23,15 @@ IGameEntityPtr TextEntityFactory::Create(const Json& data, ScenePtr scene)
 
   std::string fontName = data["font"];
 
-  auto fontService = ServiceLocator::GetService<IFontService>();
-  if (!fontService)
+  auto fontService = serviceLocator.GetService<IFontService>();
+  if (fontService.expired())
   {
     PLOG_ERROR << "TextEntityFactory: FontService not available";
     throw std::runtime_error("TextEntityFactory: FontService not available to "
       "retrieve fonts");
   }
 
-  const sf::Font& font = fontService->GetFont(fontName);
+  const sf::Font& font = fontService.lock()->GetFont(fontName);
 
   std::string text = "";
   if (data.contains("text") && data["text"].is_string())
@@ -42,7 +45,9 @@ IGameEntityPtr TextEntityFactory::Create(const Json& data, ScenePtr scene)
 }
 
 IGameEntityPtr FPSDisplayEntityFactory::Create(
-  const Json& data, ScenePtr scene)
+  const Json& data,
+  SceneWeakPtr scene,
+  const ServiceLocator& serviceLocator)
 {
   if (!data.contains("font") || !data["font"].is_string())
   {
@@ -54,15 +59,15 @@ IGameEntityPtr FPSDisplayEntityFactory::Create(
 
   std::string fontName = data["font"];
 
-  auto fontService = ServiceLocator::GetService<IFontService>();
-  if (!fontService)
+  auto fontService = serviceLocator.GetService<IFontService>();
+  if (fontService.expired())
   {
     PLOG_ERROR << "FPSDisplayEntityFactory: FontService not available";
     throw std::runtime_error("FPSDisplayEntityFactory: FontService not "
       "available to retrieve fonts");
   }
 
-  const sf::Font& font = fontService->GetFont(fontName);
+  const sf::Font& font = fontService.lock()->GetFont(fontName);
 
   auto fpsDisplayEntity = std::make_shared<FPSDisplayEntity>(font, "");
   IGAMEENTITYFACTORY_SET_COMMON_PARAMS(fpsDisplayEntity, data);

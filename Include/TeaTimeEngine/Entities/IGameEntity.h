@@ -21,9 +21,9 @@ public:
   virtual void SetPosition(const sf::Vector2f& position) = 0;
 };
 
-typedef std::shared_ptr<IGameEntity> IGameEntityPtr;
-typedef std::vector<IGameEntityPtr> EntityList;
-typedef std::shared_ptr<EntityList> EntityListPtr;
+using IGameEntityPtr = std::shared_ptr<IGameEntity>;
+using EntityList = std::vector<IGameEntityPtr>;
+using EntityListPtr = std::shared_ptr<EntityList>;
 
 #define IGAMEENTITY_DECLARATION() \
 private: \

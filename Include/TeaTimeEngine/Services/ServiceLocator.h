@@ -6,31 +6,28 @@
 
 class ServiceLocator
 {
-private:
-  static ServiceLocator* _instance;
-
   //Services are looked up by their typeid hash code, and stored as void 
   //pointers to allow for any type of service to be registered
   std::unordered_map<size_t, std::shared_ptr<void>> _services;
 
 public:
-  ServiceLocator();
-  ~ServiceLocator() { _instance = nullptr; }
+  ServiceLocator() = default;
+  ~ServiceLocator() = default;
 
   template<typename T>
-  static void RegisterService(std::shared_ptr<T> service)
+  void RegisterService(std::shared_ptr<T> service)
   {
     const size_t typeHash = typeid(T).hash_code();
-    _instance->_services[typeHash] = service;
+    _services[typeHash] = service;
   }
 
   template<typename T>
-  static std::shared_ptr<T> GetService()
+  std::weak_ptr<T> GetService() const
   {
     const size_t typeHash = typeid(T).hash_code();
-    if (_instance->_services.find(typeHash) != _instance->_services.end())
+    if (_services.find(typeHash) != _services.end())
     {
-      return std::static_pointer_cast<T>(_instance->_services[typeHash]);
+      return std::static_pointer_cast<T>(_services.at(typeHash));
     }
 
     throw std::runtime_error("Service not found: " +

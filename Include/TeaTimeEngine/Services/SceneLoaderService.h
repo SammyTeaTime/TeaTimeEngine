@@ -7,25 +7,28 @@
 
 #include "Services/ISceneLoaderService.h"
 
-class IGameEntityFactory;
-
 class SceneLoaderService : public ISceneLoaderService
 {
 private:
   std::unordered_map<std::string, std::shared_ptr<IGameEntityFactory>> 
     _gameEntityFactories;
+  std::weak_ptr<ServiceLocator> _serviceLocator;
 
 public:
-  SceneLoaderService();
-  ~SceneLoaderService();
+  SceneLoaderService(std::weak_ptr<ServiceLocator> serviceLocator) :
+    _serviceLocator(serviceLocator) {}
+  ~SceneLoaderService() = default;
 
   void RegisterFactory(
     const std::string& className,
     std::shared_ptr<IGameEntityFactory> factory) override;
   void UnregisterFactory(const std::string& className) override;
+
   std::shared_ptr<Scene> LoadScene(const std::string& scenePath) override;
+
   IGameEntityPtr CreateGameEntity(
     const std::string& className,
     std::unordered_map<std::string, std::string> params,
-    ScenePtr scene) override;
+    SceneWeakPtr scene,
+    const ServiceLocator& serviceLocator) override;
 };

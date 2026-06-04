@@ -3,7 +3,7 @@
 #include <memory>
 
 class IGameEntity;
-typedef std::shared_ptr<IGameEntity> IGameEntityPtr;
+using IGameEntityPtr = std::shared_ptr<IGameEntity>;
 
 #include <nlohmann/json.hpp>
 using Json = nlohmann::json;

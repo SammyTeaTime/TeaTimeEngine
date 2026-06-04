@@ -18,4 +18,4 @@ public:
   virtual void SetColour(const sf::Color& colour) = 0;
 };
 
-typedef std::shared_ptr<IParticleEffect> IParticleEffectPtr;
+using IParticleEffectPtr = std::shared_ptr<IParticleEffect>;

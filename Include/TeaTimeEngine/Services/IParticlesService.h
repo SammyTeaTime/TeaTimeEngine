@@ -7,7 +7,7 @@
 
 class IParticleEffect;
 class IParticleEffectFactory;
-typedef std::shared_ptr<IParticleEffect> IParticleEffectPtr;
+using IParticleEffectPtr = std::shared_ptr<IParticleEffect>;
 class Scene;
 
 class IParticlesService

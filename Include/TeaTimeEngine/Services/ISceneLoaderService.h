@@ -4,10 +4,11 @@
 #include <string>
 
 class IGameEntity;
-typedef std::shared_ptr<IGameEntity> IGameEntityPtr;
+using IGameEntityPtr = std::shared_ptr<IGameEntity>;
 class IGameEntityFactory;
 class Scene;
-typedef std::shared_ptr<Scene> ScenePtr;
+using SceneWeakPtr = std::weak_ptr<Scene>;
+class ServiceLocator;
 
 class ISceneLoaderService
 {
@@ -18,9 +19,12 @@ public:
     const std::string& className,
     std::shared_ptr<IGameEntityFactory> factory) = 0;
   virtual void UnregisterFactory(const std::string& className) = 0;
+
   virtual std::shared_ptr<Scene> LoadScene(const std::string& scenePath) = 0;
+  
   virtual IGameEntityPtr CreateGameEntity(
     const std::string& className,
     std::unordered_map<std::string, std::string> params,
-    ScenePtr scene) = 0;
+    SceneWeakPtr scene,
+    const ServiceLocator& serviceLocator) = 0;
 };

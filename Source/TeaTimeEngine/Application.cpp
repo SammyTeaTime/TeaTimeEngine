@@ -92,8 +92,9 @@ void Application::LoadScene(const std::string& scenePath)
     return;
   }
 
-  auto sceneLoaderService = ServiceLocator::GetService<ISceneLoaderService>();
-  std::shared_ptr<Scene> scene = sceneLoaderService->LoadScene(scenePath);
+  auto sceneLoaderService = _serviceLocator->GetService<ISceneLoaderService>();
+  std::shared_ptr<Scene> scene = 
+    sceneLoaderService.lock()->LoadScene(scenePath);
   _scenes.push_back(scene);
 }
 
@@ -184,23 +185,24 @@ void Application::CreateAndStartServices()
   _serviceLocator = std::make_shared<ServiceLocator>();
 
   auto eventService = std::make_shared<SynchronousEventService>();
-  ServiceLocator::RegisterService<IEventService>(eventService);
+  _serviceLocator->RegisterService<IEventService>(eventService);
 
   auto debugDrawService = 
     std::make_shared<SFMLDebugDrawService>(_renderWindow);
-  ServiceLocator::RegisterService<IDebugDrawService>(debugDrawService);
+  _serviceLocator->RegisterService<IDebugDrawService>(debugDrawService);
 
   auto fontService = std::make_shared<FontService>();
-  ServiceLocator::RegisterService<IFontService>(fontService);
+  _serviceLocator->RegisterService<IFontService>(fontService);
 
   auto particlesService = std::make_shared<ParticlesService>();
-  ServiceLocator::RegisterService<IParticlesService>(particlesService);
+  _serviceLocator->RegisterService<IParticlesService>(particlesService);
 
   auto randomService = std::make_shared<RandomService>();
-  ServiceLocator::RegisterService<IRandomService>(randomService);
+  _serviceLocator->RegisterService<IRandomService>(randomService);
 
-  auto sceneLoaderService = std::make_shared<SceneLoaderService>();
-  ServiceLocator::RegisterService<ISceneLoaderService>(sceneLoaderService);
+  auto sceneLoaderService = 
+    std::make_shared<SceneLoaderService>(_serviceLocator);
+  _serviceLocator->RegisterService<ISceneLoaderService>(sceneLoaderService);
 
   fontService->LoadFonts();
   sceneLoaderService->RegisterFactory("TextEntity",

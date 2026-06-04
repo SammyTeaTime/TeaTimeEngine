@@ -9,14 +9,6 @@ using Json = nlohmann::json;
 #include "Entities/IGameEntityFactory.h"
 #include "Scene.h"
 
-SceneLoaderService::SceneLoaderService()
-{
-}
-
-SceneLoaderService::~SceneLoaderService()
-{
-}
-
 void SceneLoaderService::RegisterFactory(const std::string& className,
   std::shared_ptr<IGameEntityFactory> factory)
 {
@@ -44,7 +36,7 @@ std::shared_ptr<Scene> SceneLoaderService::LoadScene(const std::string& scenePat
     std::string className = (*it)["class"];
 
     IGameEntityPtr gameEntity = _gameEntityFactories[className]->
-      Create((*it)["data"], scene);
+      Create((*it)["data"], scene, *_serviceLocator.lock());
 
     scene->AddGameEntity(gameEntity);
   }
@@ -55,12 +47,14 @@ std::shared_ptr<Scene> SceneLoaderService::LoadScene(const std::string& scenePat
 IGameEntityPtr SceneLoaderService::CreateGameEntity(
   const std::string& className,
   std::unordered_map<std::string, std::string> params,
-  ScenePtr scene)
+  SceneWeakPtr scene,
+  const ServiceLocator& serviceLocator)
 {
   if (_gameEntityFactories.find(className) == _gameEntityFactories.end())
   {
     return nullptr;
   }
 
-  return _gameEntityFactories[className]->Create(params, scene);
+  return _gameEntityFactories[className]->
+    Create(params, scene, serviceLocator);
 }

@@ -1,6 +1,10 @@
 #include "Services/SFMLDebugDrawService.h"
 
-#include "Application.h"
+SFMLDebugDrawService::SFMLDebugDrawService(
+  std::weak_ptr<sf::RenderWindow> renderWindow) :
+    _renderWindow(renderWindow)
+{
+}
 
 void SFMLDebugDrawService::DrawRectangle(
   const sf::Vector2f& position,
@@ -14,7 +18,7 @@ void SFMLDebugDrawService::DrawRectangle(
   rectangle.setOutlineColor(colour);
   rectangle.setOutlineThickness(2.0f);
 
-  GetRenderWindow().draw(rectangle);
+  _renderWindow.lock()->draw(rectangle);
 }
 
 void SFMLDebugDrawService::DrawCircle(
@@ -29,16 +33,5 @@ void SFMLDebugDrawService::DrawCircle(
   circle.setOutlineColor(colour);
   circle.setOutlineThickness(2.0f);
 
-  GetRenderWindow().draw(circle);
-}
-
-sf::RenderWindow& SFMLDebugDrawService::GetRenderWindow()
-{
-  if (_renderWindow != nullptr)
-  {
-    return *_renderWindow;
-  }
-
-  _renderWindow = &Application::GetInstance()->GetRenderWindow();
-  return *_renderWindow;
+  _renderWindow.lock()->draw(circle);
 }

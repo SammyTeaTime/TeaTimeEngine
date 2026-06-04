@@ -18,8 +18,7 @@ using Json = nlohmann::json;
 
 Application* Application::_instance = nullptr;
 
-Application::Application() :
-  _window(sf::VideoMode({ 800, 600 }), "Tea Time Application")
+Application::Application()
 {
   if (_instance != nullptr)
   {
@@ -27,19 +26,22 @@ Application::Application() :
       " already exists");
   }
 
+  _renderWindow = std::make_shared<sf::RenderWindow>
+    (sf::VideoMode({ 800, 600 }), "Tea Time Application");
+
   _instance = this;
 
-  _window.setKeyRepeatEnabled(false);
+  _renderWindow->setKeyRepeatEnabled(false);
 }
 
 bool Application::IsWindowOpen()
 {
-  return _window.isOpen();
+  return _renderWindow->isOpen();
 }
 
 void Application::ProcessEvents()
 {
-  _window.handleEvents([this](const auto& type)
+  _renderWindow->handleEvents([this](const auto& type)
     {
       this->HandleEvent(type);
     });
@@ -64,14 +66,14 @@ void Application::Update()
 
 void Application::Render()
 {
-  _window.clear();
+  _renderWindow->clear();
 
   for (auto& scene : _scenes)
   {
-    scene->Render(_window);
+    scene->Render(*_renderWindow);
   }
 
-  _window.display();
+  _renderWindow->display();
 }
 
 void Application::Destroy()
@@ -109,13 +111,13 @@ void Application::HandleEvent(const sf::Event::KeyReleased& event)
 {
   if (event.code == sf::Keyboard::Key::Escape)
   {
-    _window.close();
+    _renderWindow->close();
   }
 }
 
 void Application::HandleEvent(const sf::Event::Closed& event)
 {
-  _window.close();
+  _renderWindow->close();
 }
 #pragma endregion
 
@@ -151,7 +153,7 @@ void Application::ApplyApplicationConfig()
     if (windowConfig.contains("title") && windowConfig["title"].is_string())
     {
       std::string title = windowConfig["title"];
-      _window.setTitle(title);
+      _renderWindow->setTitle(title);
     }
 
     if (windowConfig.contains("width") && windowConfig.contains("height") &&
@@ -159,13 +161,13 @@ void Application::ApplyApplicationConfig()
     {
       unsigned int width = windowConfig["width"];
       unsigned int height = windowConfig["height"];
-      _window.setSize({ width, height });
+      _renderWindow->setSize({ width, height });
     }
 
     if (windowConfig.contains("vsync") && windowConfig["vsync"].is_boolean())
     {
       bool vsync = windowConfig["vsync"];
-      _window.setVerticalSyncEnabled(vsync);
+      _renderWindow->setVerticalSyncEnabled(vsync);
     }
   }
 
@@ -184,7 +186,8 @@ void Application::CreateAndStartServices()
   auto eventService = std::make_shared<SynchronousEventService>();
   ServiceLocator::RegisterService<IEventService>(eventService);
 
-  auto debugDrawService = std::make_shared<SFMLDebugDrawService>();
+  auto debugDrawService = 
+    std::make_shared<SFMLDebugDrawService>(_renderWindow);
   ServiceLocator::RegisterService<IDebugDrawService>(debugDrawService);
 
   auto fontService = std::make_shared<FontService>();

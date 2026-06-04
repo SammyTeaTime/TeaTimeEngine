@@ -5,10 +5,10 @@
 class SFMLDebugDrawService : public IDebugDrawService
 {
 private:
-  sf::RenderWindow* _renderWindow = nullptr;
+  std::weak_ptr<sf::RenderWindow> _renderWindow;
 
 public:
-  SFMLDebugDrawService() = default;
+  SFMLDebugDrawService(std::weak_ptr<sf::RenderWindow> renderWindow);
   ~SFMLDebugDrawService() = default;
 
   void DrawRectangle(
@@ -20,7 +20,4 @@ public:
     const sf::Vector2f& position,
     const float& radius,
     const sf::Color& colour) override;
-
-private:
-  sf::RenderWindow& GetRenderWindow();
 };

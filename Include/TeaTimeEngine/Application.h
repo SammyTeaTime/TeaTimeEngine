@@ -18,10 +18,8 @@ private:
   static Application* _instance;
 
   sf::Clock _clock;
-  sf::RenderWindow _window;
-
+  std::shared_ptr<sf::RenderWindow> _renderWindow;
   std::shared_ptr<ServiceLocator> _serviceLocator;
-
   std::vector<std::shared_ptr<Scene>> _scenes;
 
   std::string _startupScenePath = "";
@@ -47,7 +45,6 @@ public:
   void LoadScene(const std::string& scenePath);
   void LoadStartupScene();
 
-  sf::RenderWindow& GetRenderWindow() { return _window; }
   const std::vector<std::shared_ptr<Scene>>& GetScenes() const
   {
     return _scenes;

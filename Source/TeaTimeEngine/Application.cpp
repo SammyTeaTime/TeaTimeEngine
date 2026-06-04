@@ -12,26 +12,17 @@ using Json = nlohmann::json;
 #include "Services/FontService.h"
 #include "Services/ParticlesService.h"
 #include "Services/RandomService.h"
+#include "Services/RenderWindowService.h"
 #include "Services/SceneLoaderService.h"
 #include "Services/SFMLDebugDrawService.h"
 #include "Services/SynchronousEventService.h"
 
-Application* Application::_instance = nullptr;
-
 Application::Application()
 {
-  if (_instance != nullptr)
-  {
-    throw std::runtime_error("Application is a singleton and an instance"
-      " already exists");
-  }
-
   _renderWindow = std::make_shared<sf::RenderWindow>
     (sf::VideoMode({ 800, 600 }), "Tea Time Application");
-
-  _instance = this;
-
   _renderWindow->setKeyRepeatEnabled(false);
+  _serviceLocator = std::make_shared<ServiceLocator>();
 }
 
 bool Application::IsWindowOpen()
@@ -182,12 +173,10 @@ void Application::ApplyApplicationConfig()
 
 void Application::CreateAndStartServices()
 {
-  _serviceLocator = std::make_shared<ServiceLocator>();
-
   auto eventService = std::make_shared<SynchronousEventService>();
   _serviceLocator->RegisterService<IEventService>(eventService);
 
-  auto debugDrawService = 
+  auto debugDrawService =
     std::make_shared<SFMLDebugDrawService>(_renderWindow);
   _serviceLocator->RegisterService<IDebugDrawService>(debugDrawService);
 
@@ -200,7 +189,11 @@ void Application::CreateAndStartServices()
   auto randomService = std::make_shared<RandomService>();
   _serviceLocator->RegisterService<IRandomService>(randomService);
 
-  auto sceneLoaderService = 
+  auto renderWindowService =
+    std::make_shared<RenderWindowService>(_renderWindow);
+  _serviceLocator->RegisterService<IRenderWindowService>(renderWindowService);
+
+  auto sceneLoaderService =
     std::make_shared<SceneLoaderService>(_serviceLocator);
   _serviceLocator->RegisterService<ISceneLoaderService>(sceneLoaderService);
 

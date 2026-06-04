@@ -15,11 +15,9 @@
 class Application
 {
 private:
-  static Application* _instance;
-
   sf::Clock _clock;
-  std::shared_ptr<sf::RenderWindow> _renderWindow;
-  std::shared_ptr<ServiceLocator> _serviceLocator;
+  std::shared_ptr<sf::RenderWindow> _renderWindow = nullptr;
+  std::shared_ptr<ServiceLocator> _serviceLocator = nullptr;
   std::vector<std::shared_ptr<Scene>> _scenes;
 
   std::string _startupScenePath = "";
@@ -27,12 +25,7 @@ private:
 
 public:
   Application();
-  ~Application() { _instance = nullptr; }
-
-  static Application* GetInstance()
-  {
-    return _instance;
-  }
+  ~Application() = default;
 
   bool IsWindowOpen();
   void ProcessEvents();
@@ -45,9 +38,9 @@ public:
   void LoadScene(const std::string& scenePath);
   void LoadStartupScene();
 
-  const std::vector<std::shared_ptr<Scene>>& GetScenes() const
+  std::weak_ptr<ServiceLocator> GetServiceLocator() const
   {
-    return _scenes;
+    return _serviceLocator;
   }
 
 private:

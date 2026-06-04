@@ -2,7 +2,7 @@
 
 #include <memory>
 #include <string>
-#include <unordered_map>>
+#include <unordered_map>
 
 class IGameEntity;
 using IGameEntityPtr = std::shared_ptr<IGameEntity>;
